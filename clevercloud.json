@@ -1,0 +1,7 @@
+{
+  "deploy": {
+    "env": {
+      "CC_PYTHON_MODULE": "app"
+    }
+  }
+}
