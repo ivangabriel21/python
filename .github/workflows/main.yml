@@ -31,7 +31,6 @@ jobs:
         sudo echo "root:ivangabriel" | sudo chpasswd
         sudo curl ifconfig.me
 
-    steps:
     - name: Setup SSH
       uses: MrSquaare/ssh-setup-action@v3
       with:
